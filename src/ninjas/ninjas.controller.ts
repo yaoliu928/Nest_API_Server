@@ -14,33 +14,38 @@ import { NinjasService } from './ninjas.service';
 
 @Controller('ninjas')
 export class NinjasController {
+  constructor(private readonly ninjasService: NinjasService) {}
+
   // GET /ninjas?weapon=stars --> []
   @Get()
   getNinjas(@Query('weapon') weapon: 'stars' | 'nunchucks') {
-    const service = new NinjasService();
-    return service.getNinjas(weapon);
+    return this.ninjasService.getNinjas(weapon);
   }
+
   // GET /ninjas/:id --> {...}
   @Get(':id')
   getNinjaById(@Param('id') id: string) {
-    return { id };
+    return this.ninjasService.getNinjaById(+id);
   }
+
   // POST /ninjas
   @Post()
   createNinja(@Body() createNinjaDto: CreateNinjaDto) {
-    return { name: createNinjaDto.name };
+    return this.ninjasService.createNinja(createNinjaDto);
   }
+
   // PUT /ninjas/:id --> {...}
   @Put(':id')
   updateNinjaById(
     @Param('id') id: string,
     @Body() updateNinjaDto: UpdateNinjaDto,
   ) {
-    return { id, name: updateNinjaDto.name };
+    return this.ninjasService.updateNinjaById(+id, updateNinjaDto);
   }
+
   // DELETE /ninjas/:id
   @Delete(':id')
   deleteNinjaById(@Param('id') id: string) {
-    return { id };
+    return this.ninjasService.deleteNinjaById(+id);
   }
 }
